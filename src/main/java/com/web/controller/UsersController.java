@@ -1,19 +1,22 @@
-package com.controller;
+package com.web.controller;
 
-import com.model.User;
-import com.service.UserService;
+import com.web.model.User;
+import com.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-@org.springframework.stereotype.Controller
+@Controller
 public class UsersController {
 
     @Autowired
@@ -35,7 +38,11 @@ public class UsersController {
     }
 
     @PostMapping(value = "/usercreation")
-    public String createUser(@ModelAttribute("newuser") User user) {
+    public String createUser(@ModelAttribute("newuser") @Valid User user,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/usercreation";
+        }
         userService.createUser(user);
         return "redirect:/";
     }
@@ -44,7 +51,6 @@ public class UsersController {
     //    DELETE USER!!!
     @GetMapping(value = "/deleteuser")
     public String deleteUser(@RequestParam("id") long id) {
-        User user = userService.getOne(id);
         userService.deleteUser(id);
         return "redirect:deleted";
     }
@@ -65,7 +71,10 @@ public class UsersController {
     }
 
     @PostMapping(value = "/update")
-    public String update(@ModelAttribute("upuser") User updatedUser) {
+    public String update(@ModelAttribute("upuser") @Valid User updatedUser, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/update";
+        }
         userService.update(updatedUser, updatedUser.getId());
         return "redirect:/";
     }

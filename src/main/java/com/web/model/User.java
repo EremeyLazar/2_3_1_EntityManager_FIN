@@ -1,8 +1,10 @@
-package com.model;
+package com.web.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "users")
@@ -14,10 +16,11 @@ public class User {
     private Long id;
 
     @NotEmpty(message = "name should be visible")
+    @Size(min = 2, max = 21, message = "name should be real")
     @Column(name = "name", nullable = false, length = 21)
     private String name;
 
-    @Min(value = 0, message = "cell# should be real")
+    @Size(min = 5, message = "cell# should be real")
     @NotEmpty(message = "name should be visible")
     @Column(name = "cell")
     private String cell;
@@ -30,7 +33,7 @@ public class User {
     @Column(name = "salary")
     private int salary;
 
-    @NotEmpty(message = "Country should be visible")
+    @NotEmpty(message = "Driver Licence should be visible")
     @Column(name = "dl")
     private String dl;
 
