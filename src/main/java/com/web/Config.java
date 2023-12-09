@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:db.properties")
@@ -51,9 +54,25 @@ public class Config {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean(); // HibernateExceptions, PersistenceExceptions... to DataAccessException
         em.setDataSource(dataSource());
-        em.setPackagesToScan("com.model");
+        em.setPackagesToScan("com");
         em.setJpaVendorAdapter(vendorAdapter);
+
+        em.setJpaProperties(getHibernateProperties());
+
         return em;
+    }
+
+    private Properties getHibernateProperties() {
+        try {
+            Properties properties = new Properties();
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("hibernate.properties");
+            properties.load(inputStream);
+
+            return properties;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("CAN NOT FIND HIBERNATE.PROPERTIES");
+        }
+
     }
 
     @Bean

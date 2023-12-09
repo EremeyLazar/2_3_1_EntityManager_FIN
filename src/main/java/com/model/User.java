@@ -11,33 +11,27 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
-    @NotEmpty(message = "name should be visible")
     @Column(name = "name", nullable = false, length = 21)
     private String name;
 
-    @Min(value = 0, message = "cell# should be real")
-    @NotEmpty(message = "name should be visible")
     @Column(name = "cell")
     private String cell;
 
-    @NotEmpty(message = "Country should be visible")
     @Column(name = "country")
     private String country;
 
-    @Min(value = 1, message = "no volunteers allowed here")
     @Column(name = "salary")
     private int salary;
 
-    @NotEmpty(message = "Country should be visible")
     @Column(name = "dl")
     private String dl;
 
     public User() {
     }
 
-    public User(Long id, String name, String cell, String country, int salary, String dl) {
+    public User(int id, String name, String cell, String country, int salary, String dl) {
         this.id = id;
         this.name = name;
         this.cell = cell;
@@ -47,11 +41,11 @@ public class User {
     }
 
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

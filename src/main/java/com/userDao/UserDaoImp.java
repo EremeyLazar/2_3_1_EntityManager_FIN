@@ -21,7 +21,7 @@ public class UserDaoImp implements UserDao {
         return resultList;
     }
 
-    public User getOne(Long id) {
+    public User getOne(int id) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> root = query.from(User.class);
@@ -35,12 +35,12 @@ public class UserDaoImp implements UserDao {
         entityManager.persist(user);
     }
 
-    public void deleteUser(long id) {
+    public void deleteUser(int id) {
         User user = entityManager.find(User.class, id);
         entityManager.remove(user);
     }
 
-    public void update(User updatedUser, Long id) {
+    public void update(User updatedUser, int id) {
         User needsUpdate = getOne(id);
         needsUpdate.setName(updatedUser.getName());
         needsUpdate.setCell(updatedUser.getCell());
